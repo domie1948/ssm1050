@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.framework.rbac.failed.dao.FailedDao">
+	<resultMap type="com.framework.rbac.failed.model.Failed"
+		id="failedMap">
+		<id property="id" column="id" javaType="java.lang.Integer"
+			jdbcType="INTEGER" />
+		<result property="goodName" column="good_name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodPrice" column="good_price" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="goodType" column="good_type" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="customName" column="custom_name" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+		<result property="reason" column="reason" javaType="java.lang.String"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="Query" resultMap="failedMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		failed
+	<where>
+		<if test="failed.goodName!=null and failed.goodName!=''">
+		goodName=#{failed.goodName}
+		</if>
+		<if test="failed.goodPrice!=null and failed.goodPrice!=''">
+		AND goodPrice=#{failed.goodPrice}
+		</if>
+		<if test="failed.goodType!=null and failed.goodType!=''">
+		AND goodType=#{failed.goodType}
+		</if>
+		<if test="failed.customName!=null and failed.customName!=''">
+		AND customName=#{failed.customName}
+		</if>
+	</where>
+	LIMIT 
+	#{pager.offSet},#{pager.pageSize}
+</select>
+<select id="queryCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		failed
+	<where>
+		<if test="failed.goodName!=null and failed.goodName!=''">
+		goodName=#{failed.goodName}
+		</if>
+		<if test="failed.goodPrice!=null and failed.goodPrice!=''">
+		AND goodPrice=#{failed.goodPrice}
+		</if>
+		<if test="failed.goodType!=null and failed.goodType!=''">
+		AND goodType=#{failed.goodType}
+		</if>
+		<if test="failed.customName!=null and failed.customName!=''">
+		AND customName=#{failed.customName}
+		</if>
+	</where>
+</select>
+
+<insert id="failedAdd">
+
+	INSERT INTO
+		failed
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="goodName!=null and goodName!=''">
+			good_name,
+		</if>
+		<if test="goodPrice!=null and goodPrice!=''">
+			good_price,
+		</if>
+		<if test="goodType!=null and goodType!=''">
+			good_type,
+		</if>
+		<if test="customName!=null and customName!=''">
+			custom_name,
+		</if>
+		<if test="reason!=null and reason!=''">
+			reason,
+		</if>
+	</trim>
+	VALUES
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="goodName!=null and goodName!=''">
+			#{goodName},
+		</if>
+		<if test="goodPrice!=null and goodPrice!=''">
+			#{goodPrice},
+		</if>
+		<if test="goodType!=null and goodType!=''">
+			#{goodType},
+		</if>
+		<if test="customName!=null and customName!=''">
+			#{customName},
+		</if>
+		<if test="reason!=null and reason!=''">
+			#{reason},
+		</if>
+	</trim>
+	
+</insert>
+
+<delete id="informationDelete" parameterType="int">
+		DELETE
+		FROM
+			reason
+		WHERE
+			id=#{id}
+</delete>
+
+<update id="informationUpdate" parameterType="com.framework.rbac.failed.model.Failed">
+		UPDATE
+		reason
+		<set>
+			<if test="goodName!=null">
+				good_name=#{goodName},
+			</if>
+			<if test="goodPrice!=null">
+				good_price=#{goodPrice},
+			</if>
+			<if test="goodType!=null">
+				good_type=#{goodType},
+			</if>
+			<if test="customName!=null">
+				customName=#{customName},
+			</if>
+			<if test="reason!=null">
+				reason=#{reason},
+			</if>
+		</set>
+		WHERE id=#{id}
+</update>
+</mapper>
